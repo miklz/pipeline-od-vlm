@@ -1,0 +1,20 @@
+# This is a boilerplate parameters config generated for pipeline 'vision_language_model'
+# using Kedro 1.2.0.
+#
+# Documentation for this file format can be found in "Parameters"
+# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
+QWEN3-VL-8B-Instruct:
+  model_name: "Qwen/Qwen3-VL-8B-Instruct"
+  model_folder_name: "data/06_models/qweb3-vl-8B-instruct/"
+
+Llava-v1.6-Mistral-7B:
+  model_name: "llava-hf/llava-v1.6-mistral-7b-hf"
+  model_folder_name: "data/06_models/llava-v1.6-mistral-7b/"
+
+DeepSeek-vl2:
+  model_name: "deepseek-ai/deepseek-vl2"
+  model_folder_name: "data/06_models/llava-v1.6-mistral-7b/"
+
+VideoLLaMA3-2B-Image-HF:
+  model_name: "lkhl/VideoLLaMA3-2B-Image-HF"
+  model_folder_name: "data/06_models/videollama3-2b-image/"
