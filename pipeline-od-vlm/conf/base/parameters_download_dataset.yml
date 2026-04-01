@@ -1,5 +1,13 @@
-# This is a boilerplate parameters config generated for pipeline 'download_dataset'
-# using Kedro 1.2.0.
+# Download Dataset Pipeline Parameters
 #
-# Documentation for this file format can be found in "Parameters"
-# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
+# This file contains configuration for downloading the HuggingFace dataset.
+
+# HuggingFace dataset identifier
+hf_dataset_name: "CERTIFoundation/Maritime-SAR-Optical-Descriptions"
+
+# Dataset split to load
+hf_dataset_split: "train"
+
+# Maximum number of samples to process (null = process all)
+# Set to a small number for testing (e.g., 5)
+hf_max_samples: 5

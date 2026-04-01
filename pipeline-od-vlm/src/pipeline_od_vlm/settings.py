@@ -26,15 +26,19 @@ https://docs.kedro.org/en/stable/configure/configuration_basics/#configuration""
 # from kedro.config import OmegaConfigLoader
 
 # CONFIG_LOADER_CLASS = OmegaConfigLoader
+from omegaconf.resolvers import oc
 
 # Keyword arguments to pass to the `CONFIG_LOADER_CLASS` constructor.
 CONFIG_LOADER_ARGS = {
     "base_env": "base",
     "default_run_env": "local",
-    # "config_patterns": {
-    #     "spark" : ["spark*/"],
-    #     "parameters": ["parameters*", "parameters*/**", "**/parameters*"],
-    # }
+    "config_patterns": {
+        "parameters": ["parameters*", "parameters*/**", "**/parameters*"],
+        "credentials": ["credentials*", "**/credentials*"],
+    },
+    "custom_resolvers": {
+        "oc.env": oc.env,
+    },
 }
 
 # Class that manages Kedro's library components.

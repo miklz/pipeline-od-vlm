@@ -1,4 +1,63 @@
-# Here you can define all your datasets by using simple YAML syntax.
-#
-# Documentation for this file format can be found in "The Data Catalog"
-# Link: https://docs.kedro.org/en/stable/catalog-data/introduction/#data-catalog
+# Data Catalog for Vision Language Model Pipeline
+
+# Model: Loaded VLM model (memory dataset)
+vlm_model:
+  type: MemoryDataset
+
+# ============================================================================
+# Download Model Pipeline Parameters
+# ============================================================================
+
+# Each key maps to a top-level entry in parameters_download_model.yml.
+# The dict must contain: mlflow_run_id, mlflow_artifact_path, mlflow_flavor.
+params:od_rtdetrv2_mlflow_model:
+  type: MemoryDataset
+
+# ============================================================================
+# Model artifacts
+# ============================================================================
+
+# Local filesystem path returned by the download_model pipeline after
+# downloading the RT-DETRv2 artifact from MLflow.  Stored as a MemoryDataset
+# so the path string is passed directly to downstream nodes without
+# serialisation.
+model_path:
+  type: MemoryDataset
+
+# ============================================================================
+# Object Detection Pipeline Inputs
+# ============================================================================
+
+# Input image for single-image object detection.
+# Update the filepath to point to the actual image you want to process.
+object_detection.od_input_image:
+  type: pillow.ImageDataset
+  filepath: data/01_raw/sample_image.jpg
+
+# Maritime SAR optical descriptions dataset fed into the object detection pipeline.
+# This dataset is produced by an upstream pipeline step (e.g. download_dataset).
+object_detection.maritime_sar_optical_descriptions:
+  type: MemoryDataset
+
+# Output: Detection results from object detection
+od_results:
+  type: MemoryDataset
+
+# Output: Annotated images metadata (batch visualization)
+od_annotated_images:
+  type: MemoryDataset
+
+# Output: Detection summary
+od_summary:
+  type: json.JSONDataset
+  filepath: data/08_reporting/detection_summary.json
+
+# Output: Combined OD + VLM results saved as parquet
+hf_od_vlm_results:
+  type: pandas.ParquetDataset
+  filepath: data/07_model_output/hf_od_vlm_results.parquet
+
+# Output: Summary of the HF + OD + VLM pipeline run
+hf_od_vlm_summary:
+  type: json.JSONDataset
+  filepath: data/08_reporting/hf_od_vlm_summary.json

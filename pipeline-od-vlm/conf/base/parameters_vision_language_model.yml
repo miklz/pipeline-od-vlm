@@ -1,20 +1,130 @@
-# This is a boilerplate parameters config generated for pipeline 'vision_language_model'
-# using Kedro 1.2.0.
+# Vision Language Model Pipeline Parameters
 #
-# Documentation for this file format can be found in "Parameters"
-# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
-QWEN3-VL-8B-Instruct:
-  model_name: "Qwen/Qwen3-VL-8B-Instruct"
-  model_folder_name: "data/06_models/qweb3-vl-8B-instruct/"
+# This file contains configuration parameters for the VLM pipeline,
+# including model configurations and inference settings.
 
-Llava-v1.6-Mistral-7B:
+# ============================================================================
+# Model Registry Configurations
+# ============================================================================
+
+# Qwen3-VL-8B-Instruct Configuration
+qwen3-vl:
+  model_name: "Qwen/Qwen3-VL-8B-Instruct"
+  model_folder_name: "data/06_models/qwen3-vl-8B-instruct/"
+  dtype: "bfloat16"
+  device_map: "auto"
+  attn_implementation: "flash_attention_2"
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9
+
+# LLaVA-NeXT (v1.6-Mistral-7B) Configuration
+llava-next:
   model_name: "llava-hf/llava-v1.6-mistral-7b-hf"
   model_folder_name: "data/06_models/llava-v1.6-mistral-7b/"
+  dtype: "bfloat16"
+  device_map: "auto"
+  attn_implementation: "flash_attention_2"
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9
 
-DeepSeek-vl2:
+# DeepSeek-VL2 Configuration
+deepseek-vl2:
   model_name: "deepseek-ai/deepseek-vl2"
-  model_folder_name: "data/06_models/llava-v1.6-mistral-7b/"
+  model_folder_name: "data/06_models/deepseek-vl2/"
+  dtype: "bfloat16"
+  device_map: "auto"
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9
 
-VideoLLaMA3-2B-Image-HF:
+# VideoLLaMA3-2B-Image Configuration
+videollama3:
   model_name: "lkhl/VideoLLaMA3-2B-Image-HF"
   model_folder_name: "data/06_models/videollama3-2b-image/"
+  dtype: "bfloat16"
+  device_map: "auto"
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9
+
+
+# Default prompt for inference
+vlm_prompt: "You are a marine search and rescue (SAR) officer helping.\
+ your task is to identify the objects detected by our object detection system.\
+ Describe the object in the image inside the bounding box."
+
+# Output path for VLM results (parquet file)
+vlm_output_path: "data/07_model_output/hf_od_vlm_results.parquet"
+
+# ============================================================================
+# Batch Inference Parameters
+# ============================================================================
+
+# Column names for batch processing
+vlm_prompt_column: "prompt"
+vlm_image_column: "image"  # Column containing PIL images from OD pipeline
+
+# ============================================================================
+# Preprocessing Parameters
+# ============================================================================
+
+# Resize dimensions (width, height) - null means no resizing
+vlm_resize_dims: null
+
+# Convert mode (e.g., 'RGB', 'L') - null means no conversion
+vlm_convert_mode: "RGB"
+
+# ============================================================================
+# Aggregated Model Parameters (used by load_vision_model node)
+# ============================================================================
+vlm_parameters:
+  qwen3-vl:
+    model_name: "Qwen/Qwen3-VL-8B-Instruct"
+    model_folder_name: "data/06_models/qwen3-vl-8B-instruct/"
+    dtype: "bfloat16"
+    device_map: "auto"
+    #attn_implementation: "flash_attention_2"
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+  llava-next:
+    model_name: "llava-hf/llava-v1.6-mistral-7b-hf"
+    model_folder_name: "data/06_models/llava-v1.6-mistral-7b/"
+    dtype: "bfloat16"
+    device_map: "auto"
+    #attn_implementation: "flash_attention_2"
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+  deepseek-vl2:
+    model_name: "deepseek-ai/deepseek-vl2"
+    model_folder_name: "data/06_models/deepseek-vl2/"
+    dtype: "bfloat16"
+    device_map: "auto"
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+  videollama3:
+    model_name: "lkhl/VideoLLaMA3-2B-Image-HF"
+    model_folder_name: "data/06_models/videollama3-2b-image/"
+    dtype: "bfloat16"
+    device_map: "auto"
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+
+# ============================================================================
+# VLM Inference Parameters
+# ============================================================================
+
+# Optional inference parameters passed to vlm_model.inference()
+vlm_inference_params: {}
+
+# ============================================================================
+# HuggingFace OD+VLM Output Configuration
+# ============================================================================
+
+# Path to save the combined OD + VLM results
+hf_od_vlm_output_path: "data/07_model_output/hf_od_vlm_results.parquet"

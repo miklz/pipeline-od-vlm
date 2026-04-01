@@ -1,0 +1,15 @@
+
+
+
+
+# ============================================================================
+# VLM Inference Parameters
+# ============================================================================
+
+# VLM model to use
+vlm_model_id: "videollama3"
+
+vlm_inference_params:
+  max_new_tokens: 128
+  temperature: 0.7
+  top_p: 0.9

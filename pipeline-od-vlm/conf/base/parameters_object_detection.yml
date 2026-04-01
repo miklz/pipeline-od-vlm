@@ -1,5 +1,86 @@
-# This is a boilerplate parameters config generated for pipeline 'object_detection'
-# using Kedro 1.2.0.
-#
-# Documentation for this file format can be found in "Parameters"
-# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
+# Object Detection Pipeline Parameters
+
+# ============================================================================
+# Model Selection
+# ============================================================================
+
+# Model to use for object detection (options: "rt-deterv2", "yolo")
+od_model_id: "rt-deterv2"
+
+# ============================================================================
+# Detection Parameters
+# ============================================================================
+
+# General detection settings
+od_confidence_threshold: 0.5  # Minimum confidence score for detections
+od_detection_params:
+  iou_threshold: 0.45  # IoU threshold for NMS (YOLO only)
+
+# ============================================================================
+# Input/Output Configuration
+# ============================================================================
+
+# Single image detection
+od_single_output_path: "data/07_model_output/annotated_image.jpg"
+od_results_output_path: "data/07_model_output/detection_results.json"
+
+# Batch detection
+od_input_dataset: "data/01_raw/detection_dataset.csv"
+od_image_column: "image_path"
+od_detections_column: "detections"
+od_batch_output_dir: "data/07_model_output/annotated_images"
+od_batch_output_path: "data/07_model_output/batch_detection_results.parquet"
+od_annotated_output_path: "data/07_model_output/annotated_images_metadata.json"
+
+# ============================================================================
+# Visualization Parameters
+# ============================================================================
+
+od_box_style:
+  box_color: "red"    # Color for bounding boxes
+  text_color: "white" # Color for text labels
+  box_width: 3        # Width of bounding box lines
+  font_size: 20       # Font size for labels
+
+# ============================================================================
+# Aggregated Model Parameters (used by load_object_detection_model node)
+# ============================================================================
+
+# This dict is passed as `parameters` to load_object_detection_model,
+# which then looks up parameters[od_model_id] to get model-specific config.
+od_parameters:
+  rt-deterv2:
+    # model_name is used only to load the HuggingFace image processor.
+    # The model weights are downloaded from MLflow (see catalog.yml: od_rtdetrv2_mlflow_model).
+    model_name: "PekingU/rtdetr_r50vd"
+    model_folder_name: "rtdetr"
+    dtype: "bfloat16"
+    device_map: "auto"
+    attn_implementation: null
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+    additional_params: null
+  yolo:
+    model_name: "yolov8n.pt"
+    model_folder_name: "yolo"
+    dtype: "float32"
+    device_map: "auto"
+    attn_implementation: null
+    max_new_tokens: 128
+    temperature: 0.7
+    top_p: 0.9
+    additional_params: null
+
+# ============================================================================
+# HuggingFace Dataset Configuration (used by object_detection HF pipeline)
+# ============================================================================
+
+# Column name containing PIL images in the HF dataset
+hf_image_column: "image"
+
+# Column name containing image IDs in the HF dataset
+hf_id_column: "img_id"
+
+# Column name for detections in the intermediate DataFrame
+hf_detections_column: "detections"

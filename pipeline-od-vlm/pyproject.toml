@@ -16,6 +16,15 @@ dependencies = [
     "jupyterlab>=3.0",
     "notebook",
     "kedro~=1.2.0",
+    "kedro-mlflow>=2.0.2",
+    "torch>=2.10.0",
+    "datasets>=4.8.3",
+    "opencv-python-headless>=4.13.0.92",
+    "transformers>=5.3.0",
+    "kedro-datasets>=9.2.0",
+    "accelerate>=1.13.0",
+    "kedro-viz>=12.3.0",
+    "torchvision>=0.25.0",
 ]
 
 [project.scripts]

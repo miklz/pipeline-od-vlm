@@ -1,0 +1,14 @@
+# Parameters for the 'download_model' pipeline.
+#
+# mlflow_run_id      - The MLflow run ID from which the model artifact will be
+#                      downloaded. Replace with the actual run ID you want to use.
+# mlflow_artifact_path - The artifact path within the MLflow run
+#                        (e.g., "model", "checkpoints/best_model").
+# mlflow_flavor      - The MLflow model flavor used to load the model.
+#                      Common values: "mlflow.pyfunc", "mlflow.pytorch",
+#                      "mlflow.sklearn", "mlflow.transformers".
+
+od_rtdetrv2_mlflow_model:
+  mlflow_run_id: "232629237ef34e4eacda191e443b2598"
+  mlflow_artifact_path: "model"
+  mlflow_flavor: "mlflow.pytorch"
