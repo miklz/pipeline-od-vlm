@@ -61,3 +61,28 @@ hf_od_vlm_results:
 hf_od_vlm_summary:
   type: json.JSONDataset
   filepath: data/08_reporting/hf_od_vlm_summary.json
+
+# ============================================================================
+# Evaluate Metrics Pipeline
+# ============================================================================
+
+# Intermediate: validated DataFrame ready for metric computation
+eval_input_df:
+  type: MemoryDataset
+
+# Intermediate: DataFrame enriched with BERTScore columns
+bert_scored_df:
+  type: MemoryDataset
+
+# Intermediate: DataFrame enriched with CLIPScore columns
+clip_scored_df:
+  type: MemoryDataset
+
+# Intermediate: full evaluation report dict (in-memory)
+evaluation_report:
+  type: MemoryDataset
+
+# Output: summary JSON written by save_evaluation_report node
+eval_summary:
+  type: json.JSONDataset
+  filepath: data/08_reporting/eval_summary.json

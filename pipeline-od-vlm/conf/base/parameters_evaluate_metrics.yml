@@ -1,5 +1,95 @@
-# This is a boilerplate parameters config generated for pipeline 'evaluate_metrics'
-# using Kedro 1.2.0.
-#
-# Documentation for this file format can be found in "Parameters"
-# Link: https://docs.kedro.org/en/1.2.0/configuration/parameters.html
+# =============================================================================
+# Evaluate Metrics Pipeline Parameters
+# =============================================================================
+# All keys are nested under the top-level `evaluate_metrics` namespace and
+# referenced in the pipeline as `params:evaluate_metrics`.
+# =============================================================================
+
+evaluate_metrics:
+
+  # ---------------------------------------------------------------------------
+  # Data Preparation
+  # ---------------------------------------------------------------------------
+
+  # Column in the VLM results DataFrame that holds the generated description.
+  eval_candidate_column: "vlm_response"
+
+  # Column in the VLM results DataFrame that holds the human reference
+  # description. Set to null to skip BERTScore (only CLIPScore is computed).
+  eval_reference_column: "captions"
+
+  # Column that holds the image data (PIL Image, path string, or bytes).
+  eval_image_column: "image"
+
+  # Drop rows where vlm_success == False before computing metrics.
+  eval_filter_failed: true
+
+  # ---------------------------------------------------------------------------
+  # BERTScore
+  # ---------------------------------------------------------------------------
+
+  # HuggingFace model used for contextual embeddings.
+  # Lightweight default: "distilbert-base-uncased"
+  # Higher quality:      "roberta-large"
+  bert_model_type: "distilbert-base-uncased"
+
+  # ISO 639-1 language code of the descriptions.
+  bert_lang: "en"
+
+  # Number of text pairs processed per BERTScore batch.
+  bert_batch_size: 32
+
+  # Device override for BERTScore ("cpu", "cuda", "cuda:0", etc.).
+  # null → bert_score picks automatically.
+  bert_device: null
+
+  # Apply baseline rescaling to shift scores towards a human-interpretable
+  # range (recommended for comparing across models).
+  bert_rescale_with_baseline: true
+
+  # ---------------------------------------------------------------------------
+  # CLIPScore
+  # ---------------------------------------------------------------------------
+
+  # HuggingFace CLIP model identifier.
+  # Compact:  "openai/clip-vit-base-patch32"
+  # Larger:   "openai/clip-vit-large-patch14"
+  clip_model_name: "openai/clip-vit-base-patch32"
+
+  # Number of image-text pairs processed per CLIPScore batch.
+  clip_batch_size: 32
+
+  # Device for CLIP inference ("cpu", "cuda", "cuda:0", etc.).
+  clip_device: "cpu"
+
+  # Image column used by CLIPScore (should match eval_image_column above).
+  clip_image_column: "image"
+
+  # Multiplicative weight applied to the cosine similarity (original paper: 2.5).
+  clip_w: 2.5
+
+  # ---------------------------------------------------------------------------
+  # Report Generation
+  # ---------------------------------------------------------------------------
+
+  # Confidence level for interval estimation (0.95 → 95 % CI).
+  eval_confidence_level: 0.95
+
+  # Number of best and worst samples to include in the HTML/JSON report.
+  eval_top_k: 10
+
+  # Title embedded in the generated HTML evaluation report.
+  eval_report_title: "VLM Evaluation Report"
+
+  # ---------------------------------------------------------------------------
+  # Output / Persistence
+  # ---------------------------------------------------------------------------
+
+  # Directory where JSON, CSV, and HTML reports are written.
+  eval_output_dir: "data/08_reporting"
+
+  # Generate a self-contained HTML report.
+  eval_save_html: true
+
+  # Save per-sample scores as a CSV file.
+  eval_save_csv: true

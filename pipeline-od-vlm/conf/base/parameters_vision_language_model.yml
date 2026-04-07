@@ -56,7 +56,7 @@ vlm_prompt: "You are a marine search and rescue (SAR) officer helping.\
  Describe the object in the image inside the bounding box."
 
 # Output path for VLM results (parquet file)
-vlm_output_path: "data/07_model_output/hf_od_vlm_results.parquet"
+vlm_output_path: "data/07_model_output/hf_od_vlm_results.json"
 
 # ============================================================================
 # Batch Inference Parameters
@@ -127,4 +127,4 @@ vlm_inference_params: {}
 # ============================================================================
 
 # Path to save the combined OD + VLM results
-hf_od_vlm_output_path: "data/07_model_output/hf_od_vlm_results.parquet"
+hf_od_vlm_output_path: "data/07_model_output/hf_od_vlm_results.json"

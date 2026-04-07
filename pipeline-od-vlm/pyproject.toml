@@ -25,6 +25,7 @@ dependencies = [
     "accelerate>=1.13.0",
     "kedro-viz>=12.3.0",
     "torchvision>=0.25.0",
+    "bert-score>=0.3.13",
 ]
 
 [project.scripts]
